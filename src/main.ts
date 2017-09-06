@@ -5,9 +5,14 @@ import { bootstrapWorkerUi } from '@angular/platform-webworker';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-if (environment.production) {
+// if (environment.production) {
+//   enableProdMode();
+// }
+
+if (ENV === 'production') {
   enableProdMode();
 }
 
+enableProdMode();
 // platformBrowserDynamic().bootstrapModule(AppModule);
 bootstrapWorkerUi('webworker.bundle.js');

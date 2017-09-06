@@ -7,9 +7,10 @@ const autoprefixer = require('autoprefixer');
 const postcssUrl = require('postcss-url');
 const cssnano = require('cssnano');
 
-const { NoEmitOnErrorsPlugin, SourceMapDevToolPlugin } = require('webpack');
-const { GlobCopyWebpackPlugin, NamedLazyChunksWebpackPlugin } = require('@angular/cli/plugins/webpack');
+const { NoEmitOnErrorsPlugin, SourceMapDevToolPlugin, NamedModulesPlugin } = require('webpack');
+const { GlobCopyWebpackPlugin, NamedLazyChunksWebpackPlugin, BaseHrefWebpackPlugin } = require('@angular/cli/plugins/webpack');
 const { CommonsChunkPlugin } = require('webpack').optimize;
+const { AotPlugin } = require('@ngtools/webpack');
 
 const nodeModules = path.join(process.cwd(), 'node_modules');
 const realNodeModules = fs.realpathSync(nodeModules);
@@ -18,6 +19,12 @@ const entryPoints = ["inline","polyfills","sw-register","styles","vendor","main"
 const minimizeCss = false;
 const baseHref = "";
 const deployUrl = "";
+
+const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
+const webpack = require('webpack');
+
 const postcssPlugins = function () {
         // safe settings based on: https://github.com/ben-eb/cssnano/issues/358#issuecomment-283696193
         const importantCommentRe = /@preserve|@license|[@#]\s*source(?:Mapping)?URL|^!/i;
@@ -397,6 +404,7 @@ module.exports = {
         }
     }
     }),
+    new BaseHrefWebpackPlugin({}),
     new CommonsChunkPlugin({
       "name": [
         "inline"
@@ -434,6 +442,37 @@ module.exports = {
       ],
       "minChunks": 2,
       "async": "common"
+    }),
+    new NamedModulesPlugin({}),
+    new AotPlugin({
+      "mainPath": "main.ts",
+      "entryModule": "app/app.module#AppModule",
+      "replaceExport": false,
+      // "hostReplacementPaths": {
+      //   "environments\\environment.ts": "environments\\environment.ts"
+      // },
+      "exclude": [],
+      "tsConfigPath": "src\\tsconfig.app.json",
+      "skipCodeGeneration": true
+    }),
+    new UglifyJSPlugin({
+        beautify: false,
+        mangle: {
+        screw_ie8: true,
+        keep_fnames: true
+      },
+      compress: {
+        warnings: false,
+        screw_ie8: true
+      },
+      parallel: { // do parallel uglifying to speed up the process
+        cache: true,
+        workers: 2 // for e.g
+      },
+      comments: false
+    }),
+    new webpack.DefinePlugin({
+      "ENV": JSON.stringify(ENV)
     }),
   ],
   "node": {

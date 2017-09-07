@@ -24,6 +24,7 @@ const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const webpack = require('webpack');
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
 
 const postcssPlugins = function () {
         // safe settings based on: https://github.com/ben-eb/cssnano/issues/358#issuecomment-283696193
@@ -474,6 +475,13 @@ module.exports = {
     new webpack.DefinePlugin({
       "ENV": JSON.stringify(ENV)
     }),
+    new CompressionWebpackPlugin({
+      asset: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8
+    })
   ],
   "node": {
     "fs": "empty",

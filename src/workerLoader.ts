@@ -1,4 +1,4 @@
-import 'polyfills.ts';
+import './polyfills.ts';
 import '@angular/core';
 import '@angular/common';
 

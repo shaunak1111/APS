@@ -344,12 +344,15 @@ module.exports = {
       },
       {
         "test": /\.ts$/,
-        "loader": "@ngtools/webpack"
+        "loader": "@ngtools/webpack",
+        "options": {
+          "tsConfigPath": "src\\tsconfig.app.json",
+        }
       }
     ]
   },
   "plugins": [
-    new NoEmitOnErrorsPlugin(),
+    // new NoEmitOnErrorsPlugin(),
     new GlobCopyWebpackPlugin({
       "patterns": [
         "assets",

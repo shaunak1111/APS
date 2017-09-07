@@ -13,6 +13,9 @@ if (ENV === 'production') {
   enableProdMode();
 }
 
-enableProdMode();
-// platformBrowserDynamic().bootstrapModule(AppModule);
-bootstrapWorkerUi('webworker.bundle.js');
+// enableProdMode();
+if (ENV === 'test') {
+	platformBrowserDynamic().bootstrapModule(AppModule);
+} else {
+	bootstrapWorkerUi('webworker.bundle.js');
+}

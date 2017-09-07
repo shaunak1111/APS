@@ -20,7 +20,12 @@ const minimizeCss = false;
 const baseHref = "";
 const deployUrl = "";
 
-const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
+let ENV = 'production';
+if (process.env.ENV === 'test') {
+  ENV = 'test';
+  console.log('test', ENV);
+}
+
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const webpack = require('webpack');

@@ -23,7 +23,6 @@ const deployUrl = "";
 let ENV = 'production';
 if (process.env.ENV === 'test') {
   ENV = 'test';
-  console.log('test', ENV);
 }
 
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
@@ -90,16 +89,16 @@ module.exports = {
   },
   "entry": {
     "main": [
-      "./src\\main.ts"
+      "./src/main.ts"
     ],
     "polyfills": [
-      "./src\\polyfills.ts"
+      "./src/polyfills.ts"
     ],
     "styles": [
-      "./src\\styles.less"
+      "./src/styles.scss"
     ],
     "webworker": [
-      "./src\\workerLoader.ts"
+      "./src/workerLoader.ts"
     ]
   },
   "output": {
@@ -131,7 +130,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.css$/,
         "use": [
@@ -154,7 +153,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "use": [
@@ -185,7 +184,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.less$/,
         "use": [
@@ -214,7 +213,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.styl$/,
         "use": [
@@ -244,7 +243,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.css$/,
         "use": [
@@ -267,7 +266,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "use": [
@@ -298,7 +297,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.less$/,
         "use": [
@@ -327,7 +326,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.styl$/,
         "use": [
@@ -381,7 +380,7 @@ module.exports = {
     }),
     new NamedLazyChunksWebpackPlugin(),
     new HtmlWebpackPlugin({
-      "template": "./src\\index.html",
+      "template": "./src/index.html",
       "filename": "./index.html",
       "hash": false,
       "inject": true,
@@ -458,14 +457,14 @@ module.exports = {
       //   "environments\\environment.ts": "environments\\environment.ts"
       // },
       "exclude": [],
-      "tsConfigPath": "src\\tsconfig.app.json",
+      "tsConfigPath": "src/tsconfig.app.json",
       "skipCodeGeneration": true
     }),
     new UglifyJSPlugin({
-        beautify: false,
-        mangle: {
-        screw_ie8: true,
-        keep_fnames: true
+      beautify: false,
+      mangle: {
+      screw_ie8: true,
+      keep_fnames: true
       },
       compress: {
         warnings: false,

@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('aps App', () => {
+describe('hcscfe App', () => {
   let page: AppPage;
 
   beforeEach(() => {

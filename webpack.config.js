@@ -7,9 +7,10 @@ const autoprefixer = require('autoprefixer');
 const postcssUrl = require('postcss-url');
 const cssnano = require('cssnano');
 
-const { NoEmitOnErrorsPlugin, SourceMapDevToolPlugin } = require('webpack');
-const { GlobCopyWebpackPlugin, NamedLazyChunksWebpackPlugin } = require('@angular/cli/plugins/webpack');
+const { NoEmitOnErrorsPlugin, SourceMapDevToolPlugin, NamedModulesPlugin } = require('webpack');
+const { GlobCopyWebpackPlugin, NamedLazyChunksWebpackPlugin, BaseHrefWebpackPlugin } = require('@angular/cli/plugins/webpack');
 const { CommonsChunkPlugin } = require('webpack').optimize;
+const { AotPlugin } = require('@ngtools/webpack');
 
 const nodeModules = path.join(process.cwd(), 'node_modules');
 const realNodeModules = fs.realpathSync(nodeModules);
@@ -88,7 +89,7 @@ module.exports = {
       "./src\\polyfills.ts"
     ],
     "styles": [
-      "./src\\styles.less"
+      "./src\\styles.scss"
     ],
     "webworker": [
       "./src\\workerLoader.ts"
@@ -123,7 +124,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.css$/,
         "use": [
@@ -146,7 +147,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "use": [
@@ -177,7 +178,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.less$/,
         "use": [
@@ -206,7 +207,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.styl$/,
         "use": [
@@ -236,7 +237,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.css$/,
         "use": [
@@ -259,7 +260,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "use": [
@@ -290,7 +291,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.less$/,
         "use": [
@@ -319,7 +320,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.less")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.styl$/,
         "use": [
@@ -357,7 +358,7 @@ module.exports = {
     ]
   },
   "plugins": [
-    // new NoEmitOnErrorsPlugin(),
+    new NoEmitOnErrorsPlugin(),
     new GlobCopyWebpackPlugin({
       "patterns": [
         "assets",
@@ -405,6 +406,7 @@ module.exports = {
         }
     }
     }),
+    new BaseHrefWebpackPlugin({}),
     new CommonsChunkPlugin({
       "name": [
         "inline"
@@ -443,6 +445,7 @@ module.exports = {
       "minChunks": 2,
       "async": "common"
     }),
+    new NamedModulesPlugin({}),
     new webpack.DefinePlugin({
       "ENV": JSON.stringify(ENV)
     }),
